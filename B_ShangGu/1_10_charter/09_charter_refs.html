@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prps</title>
+</head>
+<body>
+<div id="example"></div>
+<div id="example1"></div>
+<script type="text/javascript" src="../reactCode/react.development.js"></script>
+<script type="text/javascript" src="../reactCode/react-dom.development.js"></script>
+<script type="text/javascript" src="../reactCode/babel.min.js"></script>
+<script type="text/javascript" src="../reactCode/prop-types.js"></script>
+<script type="text/babel">
+    // 引入react中的类型检测
+    // import PropTypes from '../reactCode/prop-types'
+    // * 定义组件
+
+    class InputBox extends React.Component {
+
+        constructor(props) {
+            super(props);
+
+            this.tooltip = this.tooltip.bind(this)
+            this.handleBlur = this.handleBlur.bind(this)
+        }
+
+
+        tooltip() {
+            // 旧写法， value 获取的是页面输入的数据
+            // const input = this.refs.content;
+            // input.value = '请输入正确的数据！';
+            // alert(input.value)
+
+            // <input type="text" ref={(input) => this.input《可以随意指定》 = input}/>&nbsp;&nbsp;
+            alert(this.input.value)
+        }
+
+        handleBlur(event) {
+            // 输入， 点击其他区域，触发事件提醒
+            alert(event.target.value)
+        }
+
+
+        render() {
+            return (
+                <div>
+                    <input type="text" ref="content"/>&nbsp;&nbsp;
+                    <input type="text" ref={(input) => this.input = input}/>&nbsp;&nbsp;
+                    <button onClick={this.tooltip}>提示输入数据</button>&nbsp;&nbsp;
+                    <input type="text" placeholder="失去焦点提示内容" onBlur={this.handleBlur}/>
+                </div>
+            )
+        }
+    }
+
+    function Person(props) {
+        return (
+            <ul>
+                <li>姓名： {props.name}</li>
+                <li>年龄： {props.age}</li>
+                <li>性别： {props.gender}</li>
+            </ul>
+        )
+    }
+
+    // 设置组件的默认值
+    Person.defaultProps = {
+        sex: '男',
+        age: 18
+    }
+
+    // 设置组件数据类型检查 or 必要性检查
+    Person.propTypes = {
+        name: PropTypes.string.isRequired,
+        age: PropTypes.number
+    }
+
+    ReactDOM.render(
+        <InputBox/>
+        , document.getElementById('example'))
+
+
+</script>
+</body>
+</html>

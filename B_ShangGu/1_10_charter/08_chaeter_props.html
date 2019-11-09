@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prps</title>
+</head>
+<body>
+<div id="example"></div>
+<div id="example1"></div>
+<script type="text/javascript" src="../reactCode/react.development.js"></script>
+<script type="text/javascript" src="../reactCode/react-dom.development.js"></script>
+<script type="text/javascript" src="../reactCode/babel.min.js"></script>
+<script type="text/javascript" src="../reactCode/prop-types.js"></script>
+<script type="text/babel">
+    // 引入react中的类型检测
+    // import PropTypes from '../reactCode/prop-types'
+    // * 定义组件
+
+    class Person2 extends React.Component {
+        render() {
+            return <ul>
+                        <li>姓名： {this.props.name}</li>
+                        <li>年龄： {this.props.age}</li>
+                        <li>性别： {this.props.gender}</li>
+                    </ul>
+        }
+    }
+
+    function Person(props) {
+        return (
+            <ul>
+                <li>姓名： {props.name}</li>
+                <li>年龄： {props.age}</li>
+                <li>性别： {props.gender}</li>
+            </ul>
+        )
+    }
+
+    // 设置组件的默认值
+    Person.defaultProps = {
+        sex: '男',
+        age: 18
+    }
+
+    // 设置组件数据类型检查 or 必要性检查
+    Person.propTypes = {
+        name: PropTypes.string.isRequired,
+        age: PropTypes.number
+    }
+
+    const P1 = {
+        name: 'Tom',
+        age: 25,
+        gender: '男'
+    }
+
+    /*
+    ... 的作用：
+    1， 打包
+    function fn(...value ) {}
+    fn(1, 2, 4)
+
+    2, 解包
+    const arr1 = [, 2, 3]
+    const arr2 = [6,...arr1, 9]
+     */
+
+
+    // * 渲染组件表标签
+    // ReactDOM.render(<Person name={P1.name} age={P1.age} gender={P1.gender}/>, document.getElementById('example'))
+    // ReactDOM.render(<Like><Like/>, document.getElementById('example2'))
+    // 简洁的写法
+    ReactDOM.render(<Person {...P1}/>, document.getElementById('example'))
+
+    const P2 = {
+        name: 'Tom',
+        age: '25',
+        // gender: '男'
+    }
+
+    ReactDOM.render(<Person name={P2.name}/>, document.getElementById('example1'))
+
+
+</script>
+</body>
+</html>
