@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>生命周期</title>
+</head>
+<body>
+<div id="example"></div>
+<div id="example1"></div>
+<script type="text/javascript" src="../reactCode/react.development.js"></script>
+<script type="text/javascript" src="../reactCode/react-dom.development.js"></script>
+<script type="text/javascript" src="../reactCode/babel.min.js"></script>
+<script type="text/javascript" src="../reactCode/prop-types.js"></script>
+<script type="text/babel">
+  /*
+  生命周期
+  * */
+
+  class Life extends React.Component {
+    constructor(props) {
+      super(props)
+      this.state = {
+        opacity: 1
+      }
+      this.distroyComponent = this.distroyComponent.bind(this)
+    }
+
+    // 销毁dom节点
+    distroyComponent() {
+      ReactDOM.unmountComponentAtNode(document.getElementById('example'))
+    }
+
+    componentDidMount() {
+      // 启动循环定时器
+      // 也需要绑定组件
+      this.intervalId = setInterval(function () {
+        console.log('this', this.state)
+        let {opacity} = this.state
+        opacity -= 0.1
+        if (opacity <= 0) {
+          opacity = 1
+        }
+        this.setState({opacity})
+      }.bind(this), 200)
+    }
+
+    componentWillUnmount() {
+      // 清理定时器
+      clearInterval(this.intervalId)
+    }
+
+
+    render() {
+      const {msg} = this.props
+      const {opacity} = this.state
+      // style 两个大括号， 外面 ==》 标识 js代码；
+
+      return (
+        <div>
+          <h3 style={{opacity: opacity}}>{msg}</h3>
+          <button onClick={this.distroyComponent}>我太难了</button>
+        </div>
+      )
+    }
+  }
+
+  Life.propTypes = {
+    msg: PropTypes.string.isRequired
+  }
+
+
+  ReactDOM.render(<Life msg="React 太难了"/>, document.getElementById('example'))
+
+</script>
+</body>
+</html>

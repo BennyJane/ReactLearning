@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div id="example"></div>
+<script type="text/javascript" src="../reactCode/react.development.js"></script>
+<script type="text/javascript" src="../reactCode/react-dom.development.js"></script>
+<script type="text/javascript" src="../reactCode/babel.min.js"></script>
+<script type="text/javascript" src="../reactCode/prop-types.js"></script>
+<script type="text/babel">
+  class Table extends React.Component {
+    constructor(props) {
+      super(props)
+      this.state = {
+        pwd: ''
+      }
+
+      this.handleSubmit = this.handleSubmit.bind(this)
+      this.handleChange = this.handleChange.bind(this)
+    }
+
+    // 不受控组件： 需要时 必须手动获取表单输入框中的数据
+    handleSubmit(event) {
+      const name = this.nameInput.value
+      // alert(name)
+      // this.nameInput.value = ''
+      const {pwd} = this.state
+      // 不是冒号， 是左上角的 `
+      alert(`准备提交的用户名为${name}, 密码${pwd}`)
+
+      // 阻止表单提交, 阻止默认行为（提交）
+      event.preventDefault()
+    }
+
+    // 受控组件： 自动读入输入框的内容
+    handleChange(event) {
+      // 事件 与 被操作dom 为同一对象
+      const pwd = event.target.value
+      this.setState({pwd})
+    }
+
+
+    render() {
+      // onChange react中 与 原生dom中不同，
+      // 原生中， 失去焦点 ==》 变化 ；
+      return (
+        <form action="/test" onSubmit={this.handleSubmit}>
+          用户名： <input type="text" ref={input => this.nameInput = input}/>&nbsp;&nbsp;
+          密码： <input type="password" value={this.state.pwd} onChange={this.handleChange}/>&nbsp;&nbsp;
+          <input type="submit" value="登录"/>
+        </form>
+      )
+    }
+  }
+
+  ReactDOM.render(<Table/>, document.getElementById('example'))
+</script>
+</body>
+</html>

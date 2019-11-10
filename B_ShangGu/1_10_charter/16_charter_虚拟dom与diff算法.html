@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div id="example"></div>
+<div id="example1"></div>
+<script type="text/javascript" src="../reactCode/react.development.js"></script>
+<script type="text/javascript" src="../reactCode/react-dom.development.js"></script>
+<script type="text/javascript" src="../reactCode/babel.min.js"></script>
+<script type="text/javascript" src="../reactCode/prop-types.js"></script>
+<script type="text/babel">
+  class ChangeDate extends React.Component {
+    constructor(props) {
+      super(props)
+      this.state = {
+        date: new Date()
+      }
+    }
+
+    componentDidMount() {
+      setInterval(() => {
+        this.setState({date: new Date()})
+      }, 1000)
+    }
+
+    render() {
+      return (
+        <p>
+          node： <input type="text"/>&nbsp;&nbsp;
+          <span>当前日期： {this.state.date.toTimeString()}</span>
+        </p>
+
+      )
+    }
+  }
+  ReactDOM.render(<ChangeDate/>, document.getElementById('example'))
+</script>
+</body>
+</html>

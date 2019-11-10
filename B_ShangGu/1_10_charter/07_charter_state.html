@@ -1,61 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <title>Title</title>
 </head>
 <body>
 <div id="example"></div>
+<div id="example1"></div>
 <script type="text/javascript" src="../reactCode/react.development.js"></script>
 <script type="text/javascript" src="../reactCode/react-dom.development.js"></script>
 <script type="text/javascript" src="../reactCode/babel.min.js"></script>
+<script type="text/javascript" src="../reactCode/prop-types.js"></script>
 <script type="text/babel">
+    // 引入react中的类型检测
+    // import PropTypes from '../reactCode/prop-types'
     // * 定义组件
 
-    // ES6类组件（复杂组件）
-    class Like extends React.Component {
-        // 该state赋值
+    class InputBox extends React.Component {
+
         constructor(props) {
-            // 初始化
-            super(props)
-            this.state = {
-                isLikeMe: false
-            }
+            super(props);
 
-            // 将新增方法中的this强制绑定未组件对象
-            // bind() 产生新的方法，执行时， 不是执行
-            this.handleClick = this.handleClick.bind(this)
+            this.tooltip = this.tooltip.bind(this)
+            this.handleBlur = this.handleBlur.bind(this)
         }
 
-        // 添加组件方法 --> 更新组件状态
-        // 新添加组件方法， 默认的内部this 默认不是组件对象，而是undefined
-        // 不赋值，不绑定， 新增方法不会绑定
-        handleClick() {
-            // 得到当前状态, 并取反
-            const isLikeMe = !this.state.isLikeMe
 
-            //  <更新状态
-            this.setState({isLikeMe})   // 左右变量名称相同
-            // this.setState({isLikeMe: isLikeMe})
+        tooltip() {
+            // 旧写法， value 获取的是页面输入的数据
+            // const input = this.refs.content;
+            // input.value = '请输入正确的数据！';
+            // alert(input.value)
+
+            // <input type="text" ref={(input) => this.input《可以随意指定》 = input}/>&nbsp;&nbsp;
+            alert(this.input.value)
         }
 
-        // 重写组件的方法
+        handleBlur(event) {
+            // 输入， 点击其他区域，触发事件提醒
+            alert(event.target.value)
+        }
+
+
         render() {
-            // 读取state 值
-            const {isLikeMe} = this.state
-
-            // 组件实例对象
-            console.log(this)
-            // 添加事件监听
-            return <h2 onClick={this.handleClick}>{isLikeMe ? '你喜欢我吗？' : '我喜欢她吗？'}</h2>
+            return (
+                <div>
+                    <input type="text" ref="content"/>&nbsp;&nbsp;
+                    <input type="text" ref={(input) => this.input = input}/>&nbsp;&nbsp;
+                    <button onClick={this.tooltip}>提示输入数据</button>&nbsp;&nbsp;
+                    <input type="text" placeholder="失去焦点提示内容" onBlur={this.handleBlur}/>
+                </div>
+            )
         }
-
     }
 
+    function Person(props) {
+        return (
+            <ul>
+                <li>姓名： {props.name}</li>
+                <li>年龄： {props.age}</li>
+                <li>性别： {props.gender}</li>
+            </ul>
+        )
+    }
 
-    // * 渲染组件表标签
-    ReactDOM.render(<Like/>, document.getElementById('example'))
-    // ReactDOM.render(<Like><Like/>, document.getElementById('example2'))
+    // 设置组件的默认值
+    Person.defaultProps = {
+        sex: '男',
+        age: 18
+    }
+
+    // 设置组件数据类型检查 or 必要性检查
+    Person.propTypes = {
+        name: PropTypes.string.isRequired,
+        age: PropTypes.number
+    }
+
+    ReactDOM.render(
+        <InputBox/>
+        , document.getElementById('example'))
+
 
 </script>
 </body>
